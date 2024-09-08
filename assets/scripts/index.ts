@@ -1,21 +1,5 @@
-// Regular Expressions for validation
-const strRegex: RegExp = /^[a-zA-Z\s]*$/; // Only letters and spaces
-const emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const phoneRegex: RegExp = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-const digitRegex: RegExp = /^\d+$/; // Only digits
-
 // HTML Form Elements
 const mainForm = document.getElementById('cv-form') as HTMLFormElement | null;
-
-// Validation types enum
-enum ValidType {
-    TEXT = 'text',
-    TEXT_EMP = 'text_emp',
-    EMAIL = 'email',
-    DIGIT = 'digit',
-    PHONENO = 'phoneno',
-    ANY = 'any',
-}
 
 // User input elements
 const firstnameElem = mainForm?.firstname as HTMLInputElement;
@@ -27,6 +11,7 @@ const addressElem = mainForm?.address as HTMLInputElement;
 const emailElem = mainForm?.email as HTMLInputElement;
 const phonenoElem = mainForm?.phoneno as HTMLInputElement;
 const summaryElem = mainForm?.summary as HTMLTextAreaElement;
+
 
 // Display elements
 const nameDsp = document.getElementById('fullname_dsp') as HTMLElement;
@@ -101,43 +86,6 @@ const getUserInputs = (): object => {
     };
 };
 
-// Form validation
-const validateFormData = (elem: HTMLInputElement | HTMLTextAreaElement, elemType: ValidType, elemName: string) => {
-    const value = elem.value.trim();
-    let isValid = true;
-
-    if (elemType === ValidType.TEXT || elemType === ValidType.TEXT_EMP) {
-        isValid = strRegex.test(value) && (elemType === ValidType.TEXT ? value.length > 0 : true);
-    } else if (elemType === ValidType.EMAIL) {
-        isValid = emailRegex.test(value);
-    } else if (elemType === ValidType.PHONENO) {
-        isValid = phoneRegex.test(value);
-    } else if (elemType === ValidType.ANY) {
-        isValid = value.length > 0;
-    }
-
-    if (!isValid) {
-        addErrMsg(elem, elemName);
-    } else {
-        removeErrMsg(elem);
-    }
-};
-
-// Error message handlers
-const addErrMsg = (formElem: HTMLInputElement | HTMLTextAreaElement, formElemName: string) => {
-    const nextElem = formElem.nextElementSibling as HTMLElement | null;
-    if (nextElem) {
-        nextElem.innerHTML = `${formElemName} is invalid`;
-    }
-};
-
-const removeErrMsg = (formElem: HTMLInputElement | HTMLTextAreaElement) => {
-    const nextElem = formElem.nextElementSibling as HTMLElement | null;
-    if (nextElem) {
-        nextElem.innerHTML = '';
-    }
-};
-
 // Show the list data
 const showListData = (listData: object[], listContainer: HTMLElement) => {
     listContainer.innerHTML = '';
@@ -178,13 +126,7 @@ const generateCV = () => {
     console.log(userData);
 }
 
-// function previewImage(){
-//     let oFReader = new FileReader();
-//     oFReader.readAsDataURL(imageElem.files[0]);
-//     oFReader.onload = function(ofEvent){
-//         imageDsp.src = ofEvent.target.result;
-//     }
-// }
+
 function previewImage(): void {
     const imageElem = document.getElementById("imageElem.files[0]") as HTMLInputElement;
     const imageDsp = document.getElementById('yourImageDisplayId') as HTMLImageElement;

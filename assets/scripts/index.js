@@ -1,20 +1,6 @@
-// Regular Expressions for validation
-var strRegex = /^[a-zA-Z\s]*$/; // Only letters and spaces
-var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-var phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-var digitRegex = /^\d+$/; // Only digits
+
 // HTML Form Elements
 var mainForm = document.getElementById('cv-form');
-// Validation types enum
-var ValidType;
-(function (ValidType) {
-    ValidType["TEXT"] = "text";
-    ValidType["TEXT_EMP"] = "text_emp";
-    ValidType["EMAIL"] = "email";
-    ValidType["DIGIT"] = "digit";
-    ValidType["PHONENO"] = "phoneno";
-    ValidType["ANY"] = "any";
-})(ValidType || (ValidType = {}));
 // User input elements
 var firstnameElem = mainForm === null || mainForm === void 0 ? void 0 : mainForm.firstname;
 var middlenameElem = mainForm === null || mainForm === void 0 ? void 0 : mainForm.middlename;
@@ -92,42 +78,6 @@ var getUserInputs = function () {
         skills: fetchValues(['skill'], skillElem),
     };
 };
-// Form validation
-var validateFormData = function (elem, elemType, elemName) {
-    var value = elem.value.trim();
-    var isValid = true;
-    if (elemType === ValidType.TEXT || elemType === ValidType.TEXT_EMP) {
-        isValid = strRegex.test(value) && (elemType === ValidType.TEXT ? value.length > 0 : true);
-    }
-    else if (elemType === ValidType.EMAIL) {
-        isValid = emailRegex.test(value);
-    }
-    else if (elemType === ValidType.PHONENO) {
-        isValid = phoneRegex.test(value);
-    }
-    else if (elemType === ValidType.ANY) {
-        isValid = value.length > 0;
-    }
-    if (!isValid) {
-        addErrMsg(elem, elemName);
-    }
-    else {
-        removeErrMsg(elem);
-    }
-};
-// Error message handlers
-var addErrMsg = function (formElem, formElemName) {
-    var nextElem = formElem.nextElementSibling;
-    if (nextElem) {
-        nextElem.innerHTML = "".concat(formElemName, " is invalid");
-    }
-};
-var removeErrMsg = function (formElem) {
-    var nextElem = formElem.nextElementSibling;
-    if (nextElem) {
-        nextElem.innerHTML = '';
-    }
-};
 // Show the list data
 var showListData = function (listData, listContainer) {
     listContainer.innerHTML = '';
@@ -163,24 +113,11 @@ var generateCV = function () {
     displayCV(userData);
     console.log(userData);
 };
-// function previewImage(){
-//     let oFReader = new FileReader();
-//     oFReader.readAsDataURL(imageElem.files[0]);
-//     oFReader.onload = function(ofEvent){
-//         imageDsp.src = ofEvent.target.result;
-//     }
-// }
-function previewImage() {
-    var imageElem = document.getElementById("imageElem.files[0]");
-    var imageDsp = document.getElementById('yourImageDisplayId');
-    if (imageElem && imageElem.files && imageElem.files[0]) {
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(imageElem.files[0]);
-        oFReader.onload = function (ofEvent) {
-            if (ofEvent.target) {
-                imageDsp.src = ofEvent.target.result;
-            }
-        };
+function previewImage(){
+    let oFReader = new FileReader();
+    oFReader.readAsDataURL(imageElem.files[0]);
+    oFReader.onload = function(ofEvent){
+        imageDsp.src = ofEvent.target.result;
     }
 }
 // print CV
